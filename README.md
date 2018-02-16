@@ -1,30 +1,20 @@
-# hubot-hubot-assistant
+# hubot-assistant
 
-This script hooks up google assistant to Hubot.
+hubot-assistant is a chat bot built on the [Hubot][hubot] framework.
 
-See [`src/hubot-assistant.coffee`](src/hubot-assistant.coffee) for full documentation.
+hubot-assistant uses Google Assistant API to integrate an assitant to a slack channel.
 
-## Installation
+### Configuration
+You will need a google API oAuth2 json which you can get from https://console.cloud.google.com/apis/. 
 
-In hubot project repo, run:
+This json will nede to be copy and pasted into secret.json in order to work.
 
-`npm install hubot-hubot-assistant --save`
+The first time you run this a link will be pasted into the console with an authentication link to authenticate the app.
 
-Then add **hubot-hubot-assistant** to your `external-scripts.json`:
+## Use
 
-```json
-[
-  "hubot-hubot-assistant"
-]
-```
-
-## Sample Interaction
-
-```
-user1>> hubot hello
-hubot>> hello!
-```
-
-## NPM Module
-
-https://www.npmjs.com/package/hubot-hubot-assistant
+Wake Word - google <br />
+    ex. google tell me a joke. <br />
+Black List - a list of words for google to ignore (blacklist.txt) <br />
+    ex. play <br />
+Admin List - a list of admins who can edit blaclist/admins <br />
