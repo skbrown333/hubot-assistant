@@ -22,7 +22,6 @@ npm install --save hubot-assistant
 
 Some commands will send the assistant into a loop such as: 
 
-ex.
 ```
 google play mad libs
 
@@ -31,7 +30,6 @@ google tune my guitar
 
 You can get out of this loop by saying:
 
-ex.
 ```
 google quit
 ```
@@ -40,7 +38,6 @@ google quit
 
 In order to prevent this from happening you can blacklist certain words such as 
 
-ex.
 ```
 blacklist add play
 
@@ -51,7 +48,6 @@ blacklist list
 
 Only admins have access to the blacklist and admin list. First time use you will need to add a slack username to the admins.txt located in node_modules/hubot-assistant/src.
 
-ex.
 ```
 admins add skbrown333
 
