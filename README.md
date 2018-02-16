@@ -10,7 +10,7 @@ You will also need to obtain a Google API oAuth JSON to authenticate your assist
 
 The first time you run this it will open an authentication link and you will need to paste and enter the code into the console. 
 
-This uses an existing npm package google-assistant to interact with the api.
+You will also need to add hubot-assistant to the external-scripts of your hubot.
 
 ### Installing
 
