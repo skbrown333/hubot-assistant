@@ -6,7 +6,7 @@ Hubot Assistant uses Google's Assistant API to integrate an assistant into hubot
 
 You will need a hubot to use this function with. You can download existing hubots or create your own here: https://hubot.github.com/.
 
-You will also need to obtain a Google API oAuth JSON to authenticate your assistant - this can be obtained here: https://console.cloud.google.com/apis. This JSON needs to be copied into the secrets.json file located in src.
+You will also need to obtain a Google API oAuth JSON to authenticate your assistant - this can be obtained here: https://console.cloud.google.com/apis. This JSON needs to be copied into the secrets.json file located in node_modules/hubot-assistant/src.
 
 The first time you run this it will open an authentication link and you will need to paste and enter the code into the console. 
 
@@ -46,7 +46,7 @@ blacklist remove play
 blacklist list
 ```
 
-Only admins have access to the blacklist and admin list. First time use you will need to add a slack username to the admins.txt located in src.
+Only admins have access to the blacklist and admin list. First time use you will need to add a slack username to the admins.txt located in node_modules/hubot-assistant/src.
 
 ```
 admins add skbrown333
