@@ -2,21 +2,15 @@
 
 Hubot Assistant uses Google's Assistant API to integrate an assistant into hubot.  This can be used to add an AI assistant to a slack channel.  
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
 ### Prerequisites
 
 You will need a hubot to use this function with. You can download existing hubots or create your own here: https://hubot.github.com/.
 
 You will also need to obtain a Google API oAuth JSON to authenticate your assistant - this can be obtained here: https://console.cloud.google.com/apis. This JSON needs to be copied into the secrets.json file located in src.
 
-This uses an existing npm package google-assistant to interact with the api.
+The first time you run this it will open an authentication link and you will need to paste and enter the code into the console. 
 
-```
-npm install --save google-assistant
-```
+This uses an existing npm package google-assistant to interact with the api.
 
 ### Installing
 
