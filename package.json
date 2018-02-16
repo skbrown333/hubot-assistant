@@ -1,7 +1,7 @@
 {
   "name": "hubot-assistant",
   "description": "A hubot script that integrates Google Assistant",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "author": "skbrown333 <skbrown333@gmail.com>",
   "license": "MIT",
   "keywords": "hubot, hubot-assistant, assistant, google, google-assistant",
