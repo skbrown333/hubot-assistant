@@ -15,7 +15,7 @@ You will also need to add hubot-assistant to the external-scripts of your hubot.
 ### Installing
 
 ```
-npm install hubot-assistant
+npm install --save hubot-assistant
 ```
 
 ## Warnings
