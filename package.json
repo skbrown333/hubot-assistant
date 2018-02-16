@@ -1,6 +1,6 @@
 {
   "name": "hubot-assistant",
-  "version": "0.0.7 ",
+  "version": "0.0.8",
   "private": false,
   "author": "skbrown333 <skbrown333@gmail.com>",
   "description": "A hubot-assitant using googles assistant API.",
