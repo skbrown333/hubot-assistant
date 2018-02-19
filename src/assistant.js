@@ -41,7 +41,7 @@ let admins = processList(adminFile);
 module.exports = function (robot) {
 	robot.hear(/^blacklist add (.*)/i, (res) => {
 		if (admins.indexOf(res.message.user.name) < 0) {
-			res.reply('I\'m afraid I can\'t let you do that.');
+			res.reply('I\'m afraid I can\'t let you do that. you are not an admin.');
 			return;
 		}
 
@@ -51,7 +51,7 @@ module.exports = function (robot) {
 
 	robot.hear(/^blacklist remove (.*)/i, (res) => {
 		if (admins.indexOf(res.message.user.name) < 0) {
-			res.reply('I\'m afraid I can\'t let you do that.');
+			res.reply('I\'m afraid I can\'t let you do that. You are not an admin.');
 			return;
 		}
 
@@ -61,7 +61,7 @@ module.exports = function (robot) {
 
 	robot.hear(/^admins add (.*)/i, (res) => {
 		if (admins.indexOf(res.message.user.name) < 0) {
-			res.reply('I\'m afraid I can\'t let you do that.');
+			res.reply('I\'m afraid I can\'t let you do that. You are not an admin.');
 			return;
 		}
 
@@ -71,7 +71,7 @@ module.exports = function (robot) {
 
 	robot.hear(/^admins remove (.*)/i, (res) => {
 		if (admins.indexOf(res.message.user.name) < 0) {
-			res.reply('I\'m afraid I can\'t let you do that.');
+			res.reply('I\'m afraid I can\'t let you do that. You are not an admin.');
 			return;
 		}
 
@@ -94,7 +94,7 @@ module.exports = function (robot) {
 		const input = res.match[1].toLowerCase();
 		for (const w of blacklist) {
 			if (input.indexOf(w) >= 0) {
-				res.reply('I\'m afraid I can\'t let you do that.');
+				res.reply(`I'm afraid I can't let you do that. The word [ ${w} ] has bee blacklisted.`);
 				return;
 			}
 		}
