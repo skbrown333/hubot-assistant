@@ -14,14 +14,16 @@ const fs = require('fs');
 
 const blacklistFile = path.resolve(__dirname, 'blacklist.txt');
 const adminFile = path.resolve(__dirname, 'admins.txt');
+const secretPath = process.env.HUBOT_ASSISTANT_SECRET;
+const tokenPath = process.env.HUBOT_ASSISTANT_TOKEN;
 
 // Config File for Google Assistant oAuth
 const config = {
 	auth: {
-		keyFilePath: path.resolve(__dirname, 'secret.json'),
+		keyFilePath: path.resolve(__dirname, secretPath),
 		// where you want the tokens to be saved
 		// will create the directory if not already there
-		savedTokensPath: path.resolve(__dirname, 'tokens.json'),
+		savedTokensPath: path.resolve(__dirname, tokenPath),
 	},
 	// this param is optional, but all options will be shown
 	conversation: {

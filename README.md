@@ -6,7 +6,12 @@ Hubot Assistant uses Google's Assistant API to integrate an assistant into hubot
 
 You will need a hubot to use this function with. You can download existing hubots or create your own here: https://hubot.github.com/.
 
-You will also need to obtain a Google API oAuth JSON to authenticate your assistant - this can be obtained here: https://console.cloud.google.com/apis. This JSON needs to be copied into the secrets.json file located in node_modules/hubot-assistant/src.
+You will also need to obtain a Google API oAuth JSON to authenticate your assistant - this can be obtained here: https://console.cloud.google.com/apis. This JSON needs to be copied into the secrets.json and the path to this file must be stored in an environment variable named HUBOT_ASSISTANT_SECRET. You will also need to create an environment variable named HUBOT_ASSISTANT_TOKEN to store the path to the tokens.json file.
+
+```
+export HUBOT_ASSISTANT_SECRET="/some/path/secret.json"
+export HUBOT_ASSISTANT_TOKEN="/some/path/token.js"
+```
 
 The first time you run this it will open an authentication link and you will need to paste and enter the code into the console. 
 
