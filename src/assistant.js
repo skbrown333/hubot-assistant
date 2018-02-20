@@ -41,7 +41,7 @@ let admins = processList(adminFile);
 module.exports = function (robot) {
 	robot.hear(/^blacklist add (.*)/i, (res) => {
 		if (admins.indexOf(res.message.user.name) < 0) {
-			res.reply('I\'m afraid I can\'t let you do that. you are not an admin.');
+			res.reply('I\'m afraid I can\'t let you do that. You are not an admin.');
 			return;
 		}
 
