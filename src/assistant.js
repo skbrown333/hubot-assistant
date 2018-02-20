@@ -10,12 +10,9 @@
 
 const GoogleAssistant = require('google-assistant');
 const path = require('path');
-const fs = require('fs');
-
-const blacklistFile = path.resolve(__dirname, 'blacklist.txt');
-const adminFile = path.resolve(__dirname, 'admins.txt');
 const secretPath = process.env.HUBOT_ASSISTANT_SECRET;
 const tokenPath = process.env.HUBOT_ASSISTANT_TOKEN;
+const REDIS_KEY = 'hubot-assistant';
 
 // Config File for Google Assistant oAuth
 const config = {
@@ -35,58 +32,110 @@ const config = {
 const assistant = new GoogleAssistant(config.auth);
 assistant.on('ready', () => {});
 
-let blacklist = processList(blacklistFile);
-let admins = processList(adminFile);
-
 module.exports = function (robot) {
+	let hubotAssistant;
+	let blacklist;
+	let admins;
+	let input;
+
+	if( !getHubotAssistant().admins[0] ) {
+		setHubotAssistant({ admins: process.env.HUBOT_DEFAULT_ADMIN, blacklist: [] });
+	}
+	
 	robot.hear(/^blacklist add (.*)/i, (res) => {
+		input = res.match[1];
+		hubotAssistant = getHubotAssistant(); 
+		admins = hubotAssistant.admins;
+		blacklist = hubotAssistant.blacklist;
+
 		if (admins.indexOf(res.message.user.name) < 0) {
 			res.reply('I\'m afraid I can\'t let you do that. You are not an admin.');
 			return;
+		} 
+		else if (blacklist.indexOf(input) >= 0) {
+			res.reply(`[ ${input} ] is already blacklisted.`);
+			return;
+		} 
+		else {
+			res.reply(`Added [ ${input} ] to blacklist.`);
+			blacklist.push(input);
+			setHubotAssistant(hubotAssistant);
 		}
 
-		const input = res.match[1];
-		blacklist = addToList(blacklistFile, input, blacklist);
 	});
 
 	robot.hear(/^blacklist remove (.*)/i, (res) => {
+		input = res.match[1];
+		hubotAssistant = getHubotAssistant(); 
+		admins = hubotAssistant.admins;
+		blacklist = hubotAssistant.blacklist;
+		
 		if (admins.indexOf(res.message.user.name) < 0) {
 			res.reply('I\'m afraid I can\'t let you do that. You are not an admin.');
 			return;
+		} 
+		else if (blacklist.indexOf(input) < 0) {
+			res.reply(`[ ${input} ] is not blacklisted.`);
+			return;
+		} 
+		else {
+			res.reply(`Removed [ ${input} ] from blacklist.`);
+			blacklist.splice(blacklist.indexOf(input), 1);
+			setHubotAssistant(hubotAssistant);
 		}
-
-		const input = res.match[1];
-		blacklist = removeFromList(blacklistFile, input, blacklist);
 	});
 
 	robot.hear(/^admins add (.*)/i, (res) => {
+		input = res.match[1];
+		hubotAssistant = getHubotAssistant(); 
+		admins = hubotAssistant.admins;
+		
 		if (admins.indexOf(res.message.user.name) < 0) {
 			res.reply('I\'m afraid I can\'t let you do that. You are not an admin.');
 			return;
+		} 
+		else if (admins.indexOf(input) >= 0) {
+			res.reply(`[ ${input} ] is already an admin.`);
+			return;
+		} 
+		else {
+			res.reply(`Added [ ${input} ] to admins.`);
+			admins.push(input);
+			setHubotAssistant(hubotAssistant);
 		}
-
-		const input = res.match[1];
-		admins = addToList(adminFile, input, admins);
 	});
 
 	robot.hear(/^admins remove (.*)/i, (res) => {
+		input = res.match[1];
+		hubotAssistant = getHubotAssistant(); 
+		admins = hubotAssistant.admins;
+		
 		if (admins.indexOf(res.message.user.name) < 0) {
 			res.reply('I\'m afraid I can\'t let you do that. You are not an admin.');
 			return;
+		} 
+		else if (admins.indexOf(input) >= 0) {
+			res.reply(`[ ${input} ] is not an admin.`);
+			return;
+		} 
+		else {
+			res.reply(`Removed [ ${input} ] from admins.`);
+			admins.splice(admins.indexOf(input, 1));
+			setHubotAssistant(hubotAssistant);
 		}
-
-		const input = res.match[1];
-		admins = removeFromList(adminFile, input, admins);
 	});
 
 	robot.hear(/^blacklist list/i, (res) => {
-		const response = blacklist.join('\n');
-		res.reply(`Black Listed Words: \n${response}`);
+		hubotAssistant = getHubotAssistant(); 
+		blacklist = hubotAssistant.blacklist;
+		res.reply(`Blacklisted Words: \n${blacklist.join('\n')}`);
+
 	});
 
 	robot.hear(/^admins list/i, (res) => {
-		const response = admins.join('\n');
-		res.reply(`Admin List: \n${response}`);
+		hubotAssistant = getHubotAssistant(); 
+		admins = hubotAssistant.admins;
+		res.reply(`Admin List: \n${admins.join('\n')}`);
 	});
 
 	// Google Assitant Wake Word
@@ -109,59 +158,19 @@ module.exports = function (robot) {
 				});
 		});
 	});
+
+
+	/** ********************************** */
+	/** ******** HELPER FUNCTIONS ******** */
+	/** ********************************** */
+
+	function setHubotAssistant(hubotAssistant) {
+		if(!hubotAssistant) return;
+		return robot.brain.set(REDIS_KEY, hubotAssistant);
+	}
+
+	function getHubotAssistant() {
+		if(!robot.brain.get(REDIS_KEY)) return { admins: [], blacklist : [] };
+		return robot.brain.get(REDIS_KEY);
+	}
 };
-
-/** ********************************** */
-/** ******** HELPER FUNCTIONS ******** */
-/** ********************************** */
-
-/**
- * This function will remove words from the
- * Google Assistant Blacklist.
- * @param {string} file - file to remove from
- * @param {string} word - word to be removed
- */
-
-function removeFromList(file, word, list) {
-	if (list.indexOf(word) < 0) return;
-
-	list.splice(list.indexOf(word), 1);
-	const lines = list.join('\n');
-	fs.writeFileSync(file, lines);
-	return processList(file);
-}
-
-/**
- * This function will add words to the Google
- * Assistant blacklist.
- * @param {string} file - file to append to
- * @param {string} word - word to be added to the blacklist
- */
-
-function addToList(file, word, list) {
-	if (list.indexOf(word) >= 0) return;
-	list.push(word);
-	const lines = list.join('\n');
-	fs.writeFileSync(file, lines);
-	return processList(file);
-}
-
-/**
- * This function creates a Google Assistant
- * black list of words from a text file.
- * @param {string} inputFile - file containing the black list
- */
-
-function processList(inputFile) {
-	const list = [];
-	const readline = require('readline');
-	const instream = fs.createReadStream(inputFile);
-	const outstream = new (require('stream'))();
-	const rl = readline.createInterface(instream, outstream);
-
-	rl.on('line', (line) => {
-		list.push(line);
-	});
-
-	return list;
-}
