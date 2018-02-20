@@ -39,7 +39,7 @@ module.exports = function (robot) {
 	let input;
 
 	if( !getHubotAssistant().admins[0] ) {
-		setHubotAssistant({ admins: process.env.HUBOT_DEFAULT_ADMIN, blacklist: [] });
+		setHubotAssistant({ admins: [ process.env.HUBOT_DEFAULT_ADMIN ], blacklist: [] });
 	}
 
 	robot.hear(/^blacklist add (.*)/i, (res) => {
