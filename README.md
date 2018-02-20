@@ -11,6 +11,7 @@ You will also need to obtain a Google API oAuth JSON to authenticate your assist
 ```
 export HUBOT_ASSISTANT_SECRET="/some/path/secret.json"
 export HUBOT_ASSISTANT_TOKEN="/some/path/token.js"
+export HUBOT_DEFAULT_ADMIN="skbrown333"
 ```
 
 The first time you run this it will open an authentication link and you will need to paste and enter the code into the console. 
@@ -51,7 +52,7 @@ blacklist remove play
 blacklist list
 ```
 
-Only admins have access to the blacklist and admin list. First time use you will need to add a slack username to the admins.txt located in node_modules/hubot-assistant/src.
+Only admins have access to the blacklist and admin list. First time use you will need to add a slack username to the environment variable HUBOT_DEFAULT_ADMIN.
 
 ```
 admins add skbrown333
