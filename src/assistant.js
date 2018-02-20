@@ -41,7 +41,7 @@ module.exports = function (robot) {
 	if( !getHubotAssistant().admins[0] ) {
 		setHubotAssistant({ admins: process.env.HUBOT_DEFAULT_ADMIN, blacklist: [] });
 	}
-	
+
 	robot.hear(/^blacklist add (.*)/i, (res) => {
 		input = res.match[1];
 		hubotAssistant = getHubotAssistant(); 
@@ -141,6 +141,8 @@ module.exports = function (robot) {
 	// Google Assitant Wake Word
 	robot.hear(/^google (.*)/i, (res) => {
 		const input = res.match[1].toLowerCase();
+		hubotAssistant = getHubotAssistant(); 
+		blacklist = hubotAssistant.blacklist;
 		for (const w of blacklist) {
 			if (input.indexOf(w) >= 0) {
 				res.reply(`I'm afraid I can't let you do that. The word [ ${w} ] has bee blacklisted.`);
