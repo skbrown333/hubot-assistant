@@ -166,11 +166,19 @@ module.exports = function (robot) {
 	/** ******** HELPER FUNCTIONS ******** */
 	/** ********************************** */
 
+	/**
+	 * Updates the hubotAssistant object.
+	 * @param {object} hubotAssistant - hubot assistant object 
+	 */
 	function setHubotAssistant(hubotAssistant) {
 		if(!hubotAssistant) return;
 		return robot.brain.set(REDIS_KEY, hubotAssistant);
 	}
 
+	/**
+	 * Get the hubotAssistant object.
+	 * @return {object} - hubotAssistant object
+	 */
 	function getHubotAssistant() {
 		if(!robot.brain.get(REDIS_KEY)) return { admins: [], blacklist : [] };
 		return robot.brain.get(REDIS_KEY);
